@@ -1,0 +1,329 @@
+/* ==========================================================================
+   FARLANDS HACKATHON 2026 - MINECRAFT VOXEL REGISTRATION FORM
+   ========================================================================== */
+
+.register-page {
+  position: relative;
+  display: grid;
+  min-height: 100vh;
+  place-items: center;
+  overflow: hidden;
+  padding: 60px 20px;
+  color: #f3f4f6;
+  background-color: #080a12;
+  background-image: 
+    radial-gradient(circle at 20% 20%, rgba(255, 51, 68, 0.12) 0%, transparent 40%),
+    radial-gradient(circle at 80% 80%, rgba(0, 240, 255, 0.12) 0%, transparent 40%);
+  font-family: var(--font-sans), system-ui, sans-serif;
+}
+
+.register-card {
+  position: relative;
+  z-index: 10;
+  width: min(720px, 100%);
+  background: rgba(15, 20, 32, 0.95);
+  backdrop-filter: blur(20px);
+  border: 2px solid #262f45;
+  border-radius: 10px;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.05),
+    0 20px 60px rgba(0, 0, 0, 0.8),
+    0 0 30px rgba(0, 240, 255, 0.15);
+  overflow: hidden;
+}
+
+.register-heading {
+  padding: 36px 40px 28px;
+  border-bottom: 2px solid #262f45;
+  background: rgba(8, 10, 18, 0.5);
+}
+
+.register-heading-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 24px;
+}
+
+.register-kicker {
+  display: block;
+  color: #00f0ff;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  text-shadow: 0 0 8px rgba(0, 240, 255, 0.5);
+}
+
+.register-heading h1 {
+  margin: 0;
+  font-size: 32px;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: 1px;
+  line-height: 1.2;
+}
+
+.register-heading p {
+  margin: 10px 0 0;
+  color: #9ca3af;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.register-back {
+  padding: 10px 18px;
+  color: #ffd700;
+  background: rgba(255, 215, 0, 0.08);
+  border: 1px solid rgba(255, 215, 0, 0.3);
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+
+.register-back:hover {
+  color: #ffffff;
+  background: rgba(255, 215, 0, 0.2);
+  border-color: #ffd700;
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
+}
+
+.register-form {
+  padding: 32px 40px 36px;
+}
+
+.register-message {
+  margin: 0 0 24px;
+  padding: 14px 18px;
+  color: #ffd700;
+  font-size: 14px;
+  background: rgba(255, 215, 0, 0.1);
+  border: 1px solid #ffd700;
+  border-radius: 6px;
+  line-height: 1.5;
+  box-shadow: 0 0 12px rgba(255, 215, 0, 0.2);
+}
+
+.register-form > label {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.register-form > label > span,
+.register-grid label > span {
+  color: #e5e7eb;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.register-fields {
+  margin: 28px 0;
+  padding: 24px;
+  background: rgba(8, 10, 18, 0.6);
+  border: 2px solid #262f45;
+  border-radius: 8px;
+}
+
+.register-fields legend {
+  padding: 0 12px;
+  color: #00f0ff;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.register-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.register-grid label {
+  display: grid;
+  gap: 8px;
+}
+
+.register-grid label:first-child {
+  grid-column: span 2;
+}
+
+.register-grid label > span,
+.register-fields label > span {
+  color: #e5e7eb;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.register-grid small,
+.register-fields small {
+  color: #6b7280;
+  font-weight: 400;
+}
+
+.register-page input {
+  width: 100%;
+  min-height: 48px;
+  padding: 12px 16px;
+  color: #ffffff;
+  background: rgba(0, 0, 0, 0.5);
+  border: 2px solid #262f45;
+  border-radius: 6px;
+  font-size: 15px;
+  font-family: inherit;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.register-page input::placeholder {
+  color: #4b5563;
+}
+
+.register-page input:focus {
+  border-color: #00f0ff;
+  box-shadow: 0 0 15px rgba(0, 240, 255, 0.3);
+}
+
+.register-member {
+  position: relative;
+}
+
+.register-remove {
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  color: #ff4d4d;
+  background: rgba(255, 77, 77, 0.15);
+  border: 1px solid #ff4d4d;
+  border-radius: 4px;
+  padding: 4px 10px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.register-remove:hover {
+  background: rgba(255, 77, 77, 0.3);
+  box-shadow: 0 0 10px rgba(255, 77, 77, 0.4);
+}
+
+.register-actions {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  margin: 28px 0;
+}
+
+.register-actions span {
+  color: #9ca3af;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.register-secondary {
+  padding: 12px 22px;
+  color: #00f0ff;
+  background: rgba(0, 240, 255, 0.08);
+  border: 1px solid #00f0ff;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.register-secondary:hover {
+  background: rgba(0, 240, 255, 0.2);
+  color: #ffffff;
+  box-shadow: 0 0 15px rgba(0, 240, 255, 0.4);
+}
+
+.register-submit {
+  width: 100%;
+  padding: 16px 24px;
+  color: #ffffff;
+  background: linear-gradient(135deg, #ff3344 0%, #c026d3 100%);
+  border: 2px solid #ff7088;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  box-shadow: 0 0 25px rgba(255, 51, 68, 0.4), inset 0 2px 0 rgba(255, 255, 255, 0.3);
+  transition: all 0.25s ease;
+}
+
+.register-submit:hover:not(:disabled) {
+  background: linear-gradient(135deg, #ff4d5e 0%, #d946ef 100%);
+  box-shadow: 0 0 35px rgba(255, 51, 68, 0.8), inset 0 2px 0 rgba(255, 255, 255, 0.5);
+  transform: translateY(-2px);
+}
+
+.register-submit:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+.register-success {
+  padding: 60px 40px;
+  text-align: center;
+}
+
+.register-success h1 {
+  margin: 16px 0;
+  font-size: 36px;
+  color: #ffffff;
+}
+
+.register-success p {
+  color: #9ca3af;
+  line-height: 1.6;
+}
+
+.register-number {
+  color: #ffd700 !important;
+  font-family: monospace;
+  font-size: 20px;
+  font-weight: bold;
+  margin: 20px 0 28px !important;
+  text-shadow: 0 0 12px rgba(255, 215, 0, 0.6);
+}
+
+.register-home-link {
+  display: inline-block;
+  margin-top: 12px;
+  padding: 14px 28px;
+  color: #ffffff;
+  background: linear-gradient(135deg, #ff3344, #c026d3);
+  border: 2px solid #ff7088;
+  border-radius: 6px;
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: 700;
+  box-shadow: 0 0 20px rgba(255, 51, 68, 0.4);
+  transition: all 0.2s ease;
+}
+
+.register-home-link:hover {
+  box-shadow: 0 0 35px rgba(255, 51, 68, 0.7);
+  transform: translateY(-2px);
+}
+
+@media (max-width: 620px) {
+  .register-page { padding: 20px 12px; }
+  .register-heading { padding: 24px 24px 20px; }
+  .register-heading-inner { display: block; }
+  .register-back { display: inline-block; margin-top: 16px; }
+  .register-form { padding: 24px; }
+  .register-grid { grid-template-columns: 1fr; }
+  .register-grid label:first-child { grid-column: auto; }
+  .register-remove { position: static; margin: 8px 0; }
+  .register-actions { flex-direction: column; align-items: stretch; }
+}

@@ -1,29 +1,15 @@
+﻿import VishwakarmaToFarlandsJourney from "./components/VishwakarmaToFarlandsJourney";
+import FarlandsLandingContent from "./components/FarlandsLandingContent";
+import "./landing.css";
+
 export default function Home() {
   return (
-    <main
-      style={{
-        minHeight: "100vh",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        background: "#0b0b0b",
-        color: "white",
-        textAlign: "center",
-        fontFamily: "Arial, sans-serif",
-      }}
-    >
-      <h1 style={{ fontSize: "64px", margin: 0 }}>
-        FARLANDS
-      </h1>
+    <main className="farlands-page">
+      {/* 1. Cinematic Transition: Vishwakarma Ancient Realm -> Cosmic Arrow -> Minecraft 3D Farlands World (up to 80%) */}
+      <VishwakarmaToFarlandsJourney />
 
-      <p style={{ fontSize: "24px", marginTop: "20px" }}>
-        is on its way...
-      </p>
-
-      <p style={{ fontSize: "18px", opacity: 0.7 }}>
-        Stay tuned!
-      </p>
+      {/* 2. Full Farlands Registration & Hackathon Landing Page Hub */}
+      <FarlandsLandingContent />
     </main>
   );
 }
