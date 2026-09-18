@@ -9,13 +9,13 @@ export const participantInputSchema = z.object({
   college: z.string().trim().min(2).max(150).optional().or(z.literal("")),
   course: z.string().trim().min(2).max(100).optional().or(z.literal("")),
   year: z.string().trim().min(1).max(20).optional().or(z.literal("")),
-  password: z.string().min(12).max(128),
+  password: z.string().min(8).max(128).optional().or(z.literal("")),
 });
 
 export const registrationSchema = z.object({
   teamName: z.string().trim().min(3).max(50),
   leader: participantInputSchema,
-  members: z.array(participantInputSchema).min(1).max(3),
+  members: z.array(participantInputSchema).min(0).max(3),
 }).superRefine((value, context) => {
   const emails = [value.leader, ...value.members].map((member) => member.email);
   if (new Set(emails).size !== emails.length) {

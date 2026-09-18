@@ -4,7 +4,7 @@
 drop function if exists public.confirm_captured_payment(uuid, text, jsonb);
 
 alter table public.registrations drop constraint if exists registrations_fee_amount_check;
-alter table public.registrations add constraint registrations_fee_amount_check check (fee_amount in (50000, 100000));
+alter table public.registrations add constraint registrations_fee_amount_check check (fee_amount in (50000, 100000, 120000));
 
 create type public.manual_payment_proof_status as enum ('pending_verification', 'paid', 'payment_failed');
 

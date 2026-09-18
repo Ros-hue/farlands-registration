@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -44,7 +44,12 @@ export default function LoginPage() {
         throw new Error(responseMessage(payload, "Sign in failed. Check your credentials and try again."));
       }
 
-      router.replace("/payment");
+      const role = (payload as { user?: { role?: string } })?.user?.role;
+      if (role === "admin") {
+        router.replace("/admin");
+      } else {
+        router.replace("/payment");
+      }
     } catch (error) {
       setMessage(error instanceof Error ? error.message : "Sign in failed. Check your credentials.");
       setLoading(false);

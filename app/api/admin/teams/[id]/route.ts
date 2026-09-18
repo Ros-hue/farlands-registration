@@ -69,12 +69,13 @@ export async function PATCH(request: Request, { params }: Context) {
     if (input.status) updatePayload.status = input.status;
 
     let updated: { id: string; team_name: string; team_id?: string | null; status?: string; updated_at?: string } | null = null;
-    let { data: primaryResult, error } = await admin
+    const { data: primaryResult, error: primaryError } = await admin
       .from("teams")
       .update(updatePayload)
       .eq("id", id)
       .select("id, team_id, team_name, status, updated_at")
       .single();
+    let error = primaryError;
 
     if (error && error.message?.includes("column")) {
       delete updatePayload.status;

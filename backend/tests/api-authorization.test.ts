@@ -90,3 +90,12 @@ test("API Guard: unauthenticated request to /api/payments/proof/:id is denied (4
   assert.equal(data.error, "Authentication required");
 });
 
+test("API Guard: /api/auth/logout returns 200 and clears session cookies", async () => {
+  const { POST: logoutPost } = await import("../../app/api/auth/logout/route");
+  const request = new Request("http://localhost:3000/api/auth/logout", { method: "POST" });
+  const response = await logoutPost(request);
+  assert.equal(response.status, 200);
+  const data = await response.json();
+  assert.equal(data.success, true);
+});
+

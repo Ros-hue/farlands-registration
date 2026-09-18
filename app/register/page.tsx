@@ -50,6 +50,7 @@ export default function RegisterPage() {
       const registration = payload as CreatedRegistration;
       setCreated(registration);
       setStatus("done");
+      router.push("/payment");
     } catch (error) {
       setStatus("form");
       setMessage(error instanceof Error ? error.message : "Could not create your registration.");
@@ -64,7 +65,10 @@ export default function RegisterPage() {
           <h1 className={minecraftFont.className}>You&apos;re in.</h1>
           <p>Your team has been registered for Farlands Hackathon 2026.</p>
           <p className={`register-number ${minecraftFont.className}`}>{created?.registration.registration_number}</p>
-          <Link href="/" className={`register-home-link ${minecraftFont.className}`}>Back to home</Link>
+          <p style={{ marginTop: "12px", color: "#a5df7a" }}>Redirecting to UPI payment portal...</p>
+          <Link href="/payment" className={`register-home-link ${minecraftFont.className}`} style={{ marginTop: "16px" }}>
+            Proceed to Payment →
+          </Link>
         </section>
       </main>
     );

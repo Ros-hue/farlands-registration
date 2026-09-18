@@ -26,7 +26,7 @@ test("Validation: valid participant passes schema", () => {
   assert.equal(parsed.college, "IIT Bombay");
 });
 
-test("Validation: rejects password shorter than 12 characters", () => {
+test("Validation: rejects password shorter than 8 characters", () => {
   const invalid = {
     name: "Aarav",
     email: "aarav@example.com",
@@ -34,6 +34,17 @@ test("Validation: rejects password shorter than 12 characters", () => {
   };
   const result = participantInputSchema.safeParse(invalid);
   assert.equal(result.success, false);
+});
+
+test("Validation: allows participant without password (frontend form submission)", () => {
+  const noPassword = {
+    name: "Steve Hacker",
+    email: "steve@example.com",
+    phone: "+919876543210",
+  };
+  const result = participantInputSchema.safeParse(noPassword);
+  assert.equal(result.success, true);
+  assert.equal(result.data?.name, "Steve Hacker");
 });
 
 test("Validation: rejects invalid phone number", () => {
@@ -47,7 +58,7 @@ test("Validation: rejects invalid phone number", () => {
   assert.equal(result.success, false);
 });
 
-test("Validation: valid team registration (leader + 1-3 members)", () => {
+test("Validation: valid team registration (leader + 0-3 members, 1-4 hackers total)", () => {
   const teamPayload = {
     teamName: "Code Ninjas",
     leader: {
@@ -72,6 +83,19 @@ test("Validation: valid team registration (leader + 1-3 members)", () => {
   assert.equal(result.success, true);
 });
 
+test("Validation: valid solo team registration (leader only, 0 extra members)", () => {
+  const soloPayload = {
+    teamName: "Solo Coder",
+    leader: {
+      name: "Solo Leader",
+      email: "sololeader@example.com",
+    },
+    members: [],
+  };
+  const result = registrationSchema.safeParse(soloPayload);
+  assert.equal(result.success, true);
+});
+
 test("Validation: rejects duplicate emails across team members", () => {
   const duplicateEmails = {
     teamName: "Duplicate Team",
@@ -92,22 +116,15 @@ test("Validation: rejects duplicate emails across team members", () => {
   assert.equal(result.success, false);
 });
 
-test("Validation: rejects team with 0 members or more than 3 members", () => {
-  const zeroMembers = {
-    teamName: "Solo Team",
-    leader: { name: "Leader", email: "l@example.com", password: "StrongPassword123!" },
-    members: [],
-  };
-  assert.equal(registrationSchema.safeParse(zeroMembers).success, false);
-
+test("Validation: rejects team with more than 3 extra members (exceeds max 4 hackers)", () => {
   const fourMembers = {
     teamName: "Too Big Team",
-    leader: { name: "Leader", email: "l@example.com", password: "StrongPassword123!" },
+    leader: { name: "Leader", email: "l@example.com" },
     members: [
-      { name: "M1", email: "m1@example.com", password: "StrongPassword123!" },
-      { name: "M2", email: "m2@example.com", password: "StrongPassword123!" },
-      { name: "M3", email: "m3@example.com", password: "StrongPassword123!" },
-      { name: "M4", email: "m4@example.com", password: "StrongPassword123!" },
+      { name: "M1", email: "m1@example.com" },
+      { name: "M2", email: "m2@example.com" },
+      { name: "M3", email: "m3@example.com" },
+      { name: "M4", email: "m4@example.com" },
     ],
   };
   assert.equal(registrationSchema.safeParse(fourMembers).success, false);
@@ -141,4 +158,16 @@ test("Validation: payment review schema checks rejection reason constraints", ()
   assert.equal(paymentReviewSchema.safeParse({ reason: "Screenshot unreadable" }).success, true);
   assert.equal(paymentReviewSchema.safeParse({}).success, true); // Reason is optional for approval
   assert.equal(paymentReviewSchema.safeParse({ reason: "ab" }).success, false); // Min 3 chars
+});
+
+test("Validation: teamUpdateSchema validates partial updates", () => {
+  assert.equal(teamUpdateSchema.safeParse({ teamName: "Updated Team" }).success, true);
+  assert.equal(teamUpdateSchema.safeParse({ status: "disabled" }).success, true);
+  assert.equal(teamUpdateSchema.safeParse({}).success, false);
+});
+
+test("Validation: participantUpdateSchema validates partial updates", () => {
+  assert.equal(participantUpdateSchema.safeParse({ name: "Updated Name" }).success, true);
+  assert.equal(participantUpdateSchema.safeParse({ status: "active" }).success, true);
+  assert.equal(participantUpdateSchema.safeParse({}).success, false);
 });

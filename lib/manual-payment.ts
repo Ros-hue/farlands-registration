@@ -2,7 +2,7 @@ import { randomUUID } from "node:crypto";
 import { HttpError } from "@/lib/http";
 
 export const PAYMENT_PROOF_BUCKET = "payment-proofs";
-export const PAYMENT_QR_PUBLIC_PATH = "/payment/upi-qr.jpeg";
+export const PAYMENT_QR_PUBLIC_PATH = "/payment/upi_qr.jpeg";
 export const MAX_PAYMENT_PROOF_BYTES = 5 * 1024 * 1024;
 
 export type PaymentImage = { extension: "png" | "jpg" | "webp"; mimeType: "image/png" | "image/jpeg" | "image/webp" };
@@ -39,7 +39,8 @@ export async function readPaymentImage(value: FormDataEntryValue | null) {
 }
 
 export function paymentProofPath(teamId: string, image: PaymentImage) {
-  return `${teamId}/${randomUUID()}.${image.extension}`;
+  const sanitizedTeamId = teamId.trim().toLowerCase();
+  return `${sanitizedTeamId}/${randomUUID()}.${image.extension}`;
 }
 
 export function lastFour(value: string) {

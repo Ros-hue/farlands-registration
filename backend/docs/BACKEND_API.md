@@ -53,9 +53,9 @@ Creates a new team, provisions Supabase Auth credentials for leader and members,
 
 **Constraints**:
 - `teamName`: 3–50 characters, unique.
-- `leader` + `members`: Minimum 2 teammates, maximum 4 teammates total.
+- `leader` + `members`: 1 to 4 teammates total (`members` array length 0 to 3).
 - `email`: Valid email format, lowercase, unique across all participants.
-- `password`: 12–128 characters.
+- `password`: Optional (8–128 characters). If omitted during registration, auto-provisions account using the generated Team ID as default credential.
 - `phone`: Optional, format `+?[0-9]{10,15}`.
 - `college`, `course`, `year`: Optional participant background details.
 
@@ -66,14 +66,17 @@ Creates a new team, provisions Supabase Auth credentials for leader and members,
   "team": {
     "id": "fc116fe7-fc9d-474b-a085-2338d9408bcb",
     "teamId": "FL26-7K4P9X",
+    "name": "Code Warriors",
     "teamName": "Code Warriors"
   },
   "registration": {
     "id": "72959506-71c2-4374-83ee-69b401d6996c",
-    "registrationNumber": "REG-2026-FL26-7K4P9X-A1B2",
+    "registrationId": "72959506-71c2-4374-83ee-69b401d6996c",
+    "registrationNumber": "FL26-7K4P9X",
+    "registration_number": "FL26-7K4P9X",
     "teamId": "FL26-7K4P9X",
     "status": "pending_payment",
-    "feeAmount": 100000,
+    "feeAmount": 120000,
     "currency": "INR"
   },
   "participants": [

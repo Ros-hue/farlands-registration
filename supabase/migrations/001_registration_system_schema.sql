@@ -72,7 +72,7 @@ create table public.registrations (
   team_id uuid not null unique references public.teams(id) on delete restrict,
   registration_number text not null unique,
   status public.registration_status not null default 'pending_payment',
-  fee_amount integer not null default 100000 check (fee_amount in (50000, 100000)),
+  fee_amount integer not null default 120000 check (fee_amount in (50000, 100000, 120000)),
   currency text not null default 'INR' check (currency = 'INR'),
   confirmed_at timestamptz,
   created_at timestamptz not null default now(),

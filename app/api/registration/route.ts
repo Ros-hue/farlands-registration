@@ -72,7 +72,8 @@ export async function POST(request: Request) {
 
     // 4. Provision Supabase Auth accounts for leader and members
     for (const member of members) {
-      const user = await registerParticipantAuth(member.email, member.password);
+      const memberPassword = (member.password && member.password.length >= 8) ? member.password : teamIdCode;
+      const user = await registerParticipantAuth(member.email, memberPassword);
       createdUserIds.push(user.id);
     }
 
@@ -130,7 +131,13 @@ export async function POST(request: Request) {
 
     // Fallback if college/course/year columns are not yet in legacy test DB
     if (participantError && participantError.message?.includes("column")) {
-      const strippedRows = participantRows.map(({ college, course, year, ...rest }) => rest);
+      const strippedRows = participantRows.map((row) => {
+        const copy: Record<string, unknown> = { ...row };
+        delete copy.college;
+        delete copy.course;
+        delete copy.year;
+        return copy;
+      });
       const fallbackRes = await admin
         .from("participants")
         .insert(strippedRows)
@@ -163,7 +170,7 @@ export async function POST(request: Request) {
       .insert({
         team_id: team.id,
         registration_number: registrationNumber,
-        fee_amount: 100000,
+        fee_amount: 120000,
         currency: "INR",
         status: "pending_payment",
       })
@@ -173,7 +180,8 @@ export async function POST(request: Request) {
     if (registrationError || !registration) throw new HttpError(500, "Registration could not be created");
 
     // 9. Sign in team leader to obtain HttpOnly session
-    const session = await signInUser(input.leader.email, input.leader.password);
+    const leaderPassword = (input.leader.password && input.leader.password.length >= 8) ? input.leader.password : teamIdCode;
+    const session = await signInUser(input.leader.email, leaderPassword);
 
     // 10. Audit log
     await writeAudit({
@@ -193,12 +201,15 @@ export async function POST(request: Request) {
         success: true,
         team: {
           id: team.id,
-          teamId: teamIdCode,
+          name: team.team_name,
           teamName: team.team_name,
+          teamId: teamIdCode,
         },
         registration: {
           id: registration.id,
-          registrationNumber: registration.registration_number,
+          registrationId: registration.id,
+          registrationNumber: teamIdCode,
+          registration_number: teamIdCode,
           teamId: teamIdCode,
           status: registration.status,
           feeAmount: registration.fee_amount,

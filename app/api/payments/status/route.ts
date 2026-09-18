@@ -17,7 +17,7 @@ export async function GET(request: Request) {
       .eq("team_id", viewer.teamId)
       .maybeSingle();
     if (registrationError || !registration) throw new HttpError(404, "Registration not found.");
-    const { data: proof, error: proofError } = await admin
+    const { data: proof } = await admin
       .from("payment_proofs")
       .select("id, status, utr, created_at, reviewed_at, rejection_reason")
       .eq("registration_id", registration.id)
