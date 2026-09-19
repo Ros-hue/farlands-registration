@@ -10,10 +10,10 @@
   overflow: hidden;
   padding: 60px 20px;
   color: #f3f4f6;
-  background-color: #080a12;
+  background-color: #08111f;
   background-image: 
-    radial-gradient(circle at 20% 20%, rgba(255, 51, 68, 0.12) 0%, transparent 40%),
-    radial-gradient(circle at 80% 80%, rgba(0, 240, 255, 0.12) 0%, transparent 40%);
+    radial-gradient(circle at 20% 20%, rgba(124, 60, 255, 0.22) 0%, transparent 45%),
+    radial-gradient(circle at 80% 80%, rgba(0, 229, 229, 0.18) 0%, transparent 45%);
   font-family: var(--font-sans), system-ui, sans-serif;
 }
 
@@ -21,14 +21,14 @@
   position: relative;
   z-index: 10;
   width: min(720px, 100%);
-  background: rgba(15, 20, 32, 0.95);
-  backdrop-filter: blur(20px);
-  border: 2px solid #262f45;
+  background: rgba(8, 17, 31, 0.92);
+  backdrop-filter: blur(22px);
+  border: 1px solid rgba(0, 229, 229, 0.35);
   border-radius: 10px;
   box-shadow:
     0 0 0 1px rgba(255, 255, 255, 0.05),
-    0 20px 60px rgba(0, 0, 0, 0.8),
-    0 0 30px rgba(0, 240, 255, 0.15);
+    0 24px 70px rgba(0, 0, 0, 0.8),
+    0 0 35px rgba(0, 229, 229, 0.18);
   overflow: hidden;
 }
 

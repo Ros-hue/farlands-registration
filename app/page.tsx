@@ -1,15 +1,28 @@
-﻿import VishwakarmaToFarlandsJourney from "./components/VishwakarmaToFarlandsJourney";
-import FarlandsLandingContent from "./components/FarlandsLandingContent";
+import FarlandsWorldExperience from "./components/farlands-hero/FarlandsWorldExperience";
 import "./landing.css";
 
 export default function Home() {
   return (
     <main className="farlands-page">
-      {/* 1. Cinematic Transition: Vishwakarma Ancient Realm -> Cosmic Arrow -> Minecraft 3D Farlands World (up to 80%) */}
-      <VishwakarmaToFarlandsJourney />
-
-      {/* 2. Full Farlands Registration & Hackathon Landing Page Hub */}
-      <FarlandsLandingContent />
+      {/* 
+        Core Experience:
+        STEVE FALLS FROM SKY
+                ↓
+        STEVE LANDS ON WORLD CUBE
+                ↓
+        WORLD CUBE ROTATES (Reveals hackathon chapters)
+                ↓
+        FINAL ROTATION
+                ↓
+        CIRCULAR PIXEL PORTAL APPEARS BEHIND STEVE
+                ↓
+        REGISTER NOW
+                ↓
+        STEVE ENTERS PORTAL
+                ↓
+        PORTAL TRANSITION TO REGISTRATION PAGE (/register)
+      */}
+      <FarlandsWorldExperience />
     </main>
   );
 }

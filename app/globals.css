@@ -1,8 +1,8 @@
 html, body {
   margin: 0;
   padding: 0;
-  background-color: #080a12 !important;
-  color: #f3f4f6;
+  background-color: #132e20;
+  color: #ffffff;
   overscroll-behavior-y: none;
   font-family: var(--font-sans), system-ui, -apple-system, sans-serif;
 }
