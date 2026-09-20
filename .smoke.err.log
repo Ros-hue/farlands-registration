@@ -1,0 +1,6 @@
+[API_UNEXPECTED_ERROR] Error: Supabase configuration is missing or invalid
+    at validate (C:\Users\Yuvraj Yadav\OneDrive\Desktop\farlands-registration\lib\env.ts:18:30)
+    at getSupabaseEnv (C:\Users\Yuvraj Yadav\OneDrive\Desktop\farlands-registration\lib\env.ts:23:10)
+    at getAdminClient (C:\Users\Yuvraj Yadav\OneDrive\Desktop\farlands-registration\lib\supabase\admin.ts:9:17)
+    at POST (C:\Users\Yuvraj Yadav\OneDrive\Desktop\farlands-registration\server\routes\registration.ts:29:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)

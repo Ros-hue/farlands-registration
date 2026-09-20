@@ -1,0 +1,5 @@
+
+> farlands@1.0.0 dev:server
+> tsx watch server/index.ts
+
+Farlands API server listening on http://localhost:3000

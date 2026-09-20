@@ -24,40 +24,36 @@ Creates a new team, provisions Supabase Auth credentials for leader and members,
 **Request Headers**:
 `Content-Type: application/json`
 
-**Request Body Schema**:
+**Request Body Schema** (new frontend format — `teammates[0]` is the team leader):
 ```json
 {
   "teamName": "Code Warriors",
-  "leader": {
-    "name": "Alex Mercer",
-    "email": "alex@example.com",
-    "phone": "+919876543210",
-    "college": "IIT Bombay",
-    "course": "Computer Science",
-    "year": "3rd",
-    "password": "SecurePassword123!"
-  },
-  "members": [
+  "teammates": [
+    {
+      "name": "Alex Mercer",
+      "email": "alex@example.com",
+      "phone": "+919876543210"
+    },
     {
       "name": "Sarah Connor",
       "email": "sarah@example.com",
-      "phone": "+919876543211",
-      "college": "IIT Bombay",
-      "course": "Electrical",
-      "year": "2nd",
-      "password": "SecurePassword123!"
+      "phone": "+919876543211"
     }
-  ]
+  ],
+  "submittedAt": "2026-02-10T10:30:00.000Z"
 }
 ```
 
+**Legacy format is still accepted** (`leader`/`members`, with optional `college`/`course`/`year`/`password`); the server normalizes both to the same internal participant model.
+
 **Constraints**:
 - `teamName`: 3–50 characters, unique.
-- `leader` + `members`: 1 to 4 teammates total (`members` array length 0 to 3).
+- `teammates`: 1 to 4 members (`teammates[0]` is the leader).
 - `email`: Valid email format, lowercase, unique across all participants.
-- `password`: Optional (8–128 characters). If omitted during registration, auto-provisions account using the generated Team ID as default credential.
+- `name`: 2+ characters, required for every teammate.
 - `phone`: Optional, format `+?[0-9]{10,15}`.
-- `college`, `course`, `year`: Optional participant background details.
+- `password` (legacy only): Optional (8–128 characters). If omitted, auto-provisions the account using the generated Team ID as default credential.
+- `submittedAt`: Optional ISO timestamp.
 
 **Success Response (201 Created)**:
 ```json

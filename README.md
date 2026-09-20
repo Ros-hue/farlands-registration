@@ -1,36 +1,65 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Farlands Hackathon 2026
+
+Squad registration + UPI payment + admin verification for the Farlands Hackathon event.
+
+## Architecture
+
+- **`server/`** — standalone Node HTTP server (`tsx server/index.ts`). Serves the `/api` routes (registration, auth, payments, admin) and, in production, the built frontend from `dist/`. The old Next.js app and its route handlers were removed; the handlers now live in `server/routes/`.
+- **Frontend** — a Vite + Three.js static site (`index.html`, `src/`, `public/models/`). The registration form in `src/hackathon.js` POSTs to `/api/registration`.
+- **`lib/`** (and its mirror `backend/lib/`) — the pure backend module: Supabase access, validation, sessions, rate limiting, security, team ID generation, manual payment handling.
+- **`backend/tests/`** — unit and live integration tests for the backend module.
 
 ## Getting Started
 
-First, run the development server:
+```bash
+npm install
+```
+
+Create `.env.local` from `.env.example` with your Supabase project + UPI + admin credentials.
+
+### Development
+
+Runs the API server (port 3000) and the Vite dev server (port 5173) together. Vite proxies `/api` to the API server, so the frontend talks to the backend same-origin and session cookies work out of the box.
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Or run them separately:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm run dev:server   # API on http://localhost:3000
+npm run dev:frontend # web on http://127.0.0.1:5173
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Production
 
-## Learn More
+```bash
+npm run build  # vite build -> dist/
+npm start      # single server serving /api + dist/ on PORT (default 3000)
+```
 
-To learn more about Next.js, take a look at the following resources:
+Open http://localhost:3000
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Testing
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+npm test            # backend unit tests + frontend timeline tests (no env needed)
+npm run test:live   # live Supabase integration tests (requires .env.local)
+npm run test:browser   # Playwright browser smoke test against a running dev server
+npm run typecheck   # tsc --noEmit
+```
 
-## Deploy on Vercel
+## Admin provisioning
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+npm run provision:admin
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## API
+
+See [docs/BACKEND_API.md](docs/BACKEND_API.md) for the full endpoint reference (new frontend `teammates` payload included).
+
+## Deploy
+
+`npm run build && npm start` on any Node 20+ host. Set `PORT`, `NODE_ENV=production`, and the Supabase/UPI env vars. `NODE_ENV=production` disables CORS and switches cookies to `__Host-` (secure) mode.

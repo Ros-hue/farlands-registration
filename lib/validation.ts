@@ -12,20 +12,47 @@ export const participantInputSchema = z.object({
   password: z.string().min(8).max(128).optional().or(z.literal("")),
 });
 
-export const registrationSchema = z.object({
-  teamName: z.string().trim().min(3).max(50),
+const teamNameSchema = z.string().trim().min(3).max(50);
+
+// Legacy / portal payload: explicit leader object plus up to 3 extra members.
+const legacyRegistrationShape = z.object({
+  teamName: teamNameSchema,
   leader: participantInputSchema,
   members: z.array(participantInputSchema).min(0).max(3),
-}).superRefine((value, context) => {
-  const emails = [value.leader, ...value.members].map((member) => member.email);
-  if (new Set(emails).size !== emails.length) {
-    context.addIssue({
-      code: "custom",
-      message: "Team member emails must be distinct",
-      path: ["members"],
-    });
-  }
 });
+
+// New static frontend payload: 1 to 4 teammates, the first listed is the team leader.
+export const frontendRegistrationSchema = z.object({
+  teamName: teamNameSchema,
+  teammates: z.array(participantInputSchema).min(1).max(4),
+  submittedAt: z.string().optional().or(z.literal("")),
+});
+
+export type RegistrationInput =
+  | z.infer<typeof legacyRegistrationShape>
+  | z.infer<typeof frontendRegistrationSchema>;
+
+export type LegacyRegistration = z.infer<typeof legacyRegistrationShape>;
+
+/** Normalizes either accepted shape into the canonical legacy { leader + members } form. */
+export function toLegacyRegistration(input: RegistrationInput): LegacyRegistration {
+  if ("leader" in input) return input;
+  const [leader, ...members] = input.teammates;
+  return { teamName: input.teamName, leader, members };
+}
+
+export const registrationSchema = z.union([legacyRegistrationShape, frontendRegistrationSchema])
+  .superRefine((value, context) => {
+    const members = "leader" in value ? [value.leader, ...value.members] : value.teammates;
+    const emails = members.map((member) => member.email);
+    if (new Set(emails).size !== emails.length) {
+      context.addIssue({
+        code: "custom",
+        message: "Team member emails must be distinct",
+        path: ["members"],
+      });
+    }
+  });
 
 export const loginSchema = z.object({
   teamId: z.string().trim().regex(/^[A-Z0-9]{2,6}-[A-Z0-9]{6,12}$/i, "Invalid Team ID format").optional(),

@@ -1,11 +1,11 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { GET as adminPaymentsGet } from "../app/api/admin/payments/route";
-import { GET as adminStatsGet } from "../app/api/admin/stats/route";
-import { GET as adminTeamsGet } from "../app/api/admin/teams/route";
-import { GET as adminParticipantsGet } from "../app/api/admin/participants/route";
-import { POST as registrationPost } from "../app/api/registration/route";
-import { POST as loginPost } from "../app/api/auth/login/route";
+import { GET as adminPaymentsGet } from "../server/routes/admin/payments";
+import { GET as adminStatsGet } from "../server/routes/admin/stats";
+import { GET as adminTeamsGet } from "../server/routes/admin/teams";
+import { GET as adminParticipantsGet } from "../server/routes/admin/participants";
+import { POST as registrationPost } from "../server/routes/registration";
+import { POST as loginPost } from "../server/routes/auth/login";
 
 test("API Guard: unauthenticated request to /api/admin/payments is denied (401)", async () => {
   const request = new Request("http://localhost:3000/api/admin/payments");
@@ -64,7 +64,7 @@ test("API Guard: malformed login request without identifier returns 400", async 
 });
 
 test("API Guard: unauthenticated request to /api/payments/status is denied (401)", async () => {
-  const { GET: statusGet } = await import("../app/api/payments/status/route");
+  const { GET: statusGet } = await import("../server/routes/payments/status");
   const request = new Request("http://localhost:3000/api/payments/status");
   const response = await statusGet(request);
   assert.equal(response.status, 401);
@@ -73,7 +73,7 @@ test("API Guard: unauthenticated request to /api/payments/status is denied (401)
 });
 
 test("API Guard: unauthenticated request to /api/payments/submit-proof is denied (401)", async () => {
-  const { POST: submitProofPost } = await import("../app/api/payments/submit-proof/route");
+  const { POST: submitProofPost } = await import("../server/routes/payments/submit-proof");
   const request = new Request("http://localhost:3000/api/payments/submit-proof", { method: "POST" });
   const response = await submitProofPost(request);
   assert.equal(response.status, 401);
@@ -82,7 +82,7 @@ test("API Guard: unauthenticated request to /api/payments/submit-proof is denied
 });
 
 test("API Guard: unauthenticated request to /api/payments/proof/:id is denied (401)", async () => {
-  const { GET: proofGet } = await import("../app/api/payments/proof/[id]/route");
+  const { GET: proofGet } = await import("../server/routes/payments/proof");
   const request = new Request("http://localhost:3000/api/payments/proof/00000000-0000-0000-0000-000000000000");
   const response = await proofGet(request, { params: Promise.resolve({ id: "00000000-0000-0000-0000-000000000000" }) });
   assert.equal(response.status, 401);
@@ -91,7 +91,7 @@ test("API Guard: unauthenticated request to /api/payments/proof/:id is denied (4
 });
 
 test("API Guard: /api/auth/logout returns 200 and clears session cookies", async () => {
-  const { POST: logoutPost } = await import("../app/api/auth/logout/route");
+  const { POST: logoutPost } = await import("../server/routes/auth/logout");
   const request = new Request("http://localhost:3000/api/auth/logout", { method: "POST" });
   const response = await logoutPost(request);
   assert.equal(response.status, 200);

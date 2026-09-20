@@ -1,5 +1,3 @@
-import type { NextResponse } from "next/server";
-
 const production = process.env.NODE_ENV === "production";
 const ACCESS_COOKIE = production ? "__Host-farlands-access" : "farlands-access";
 const REFRESH_COOKIE = production ? "__Host-farlands-refresh" : "farlands-refresh";
@@ -29,19 +27,34 @@ type SessionTokens = {
   accessExpiresAt?: number;
 };
 
+function serializeCookie(name: string, value: string, maxAge: number) {
+  const parts = [
+    `${name}=${encodeURIComponent(value)}`,
+    "Path=/",
+    "HttpOnly",
+    ...(cookieOptions.secure ? ["Secure"] : []),
+    `SameSite=${cookieOptions.sameSite[0].toUpperCase()}${cookieOptions.sameSite.slice(1)}`,
+    `Max-Age=${Math.max(0, maxAge)}`,
+    `Priority=${cookieOptions.priority[0].toUpperCase()}${cookieOptions.priority.slice(1)}`,
+  ];
+  return parts.join("; ");
+}
+
 /**
  * The browser receives only HttpOnly cookies. It cannot inspect either Supabase
  * token from JavaScript, rendered markup, storage, or a URL.
  */
-export function setSessionCookies(response: NextResponse, session: SessionTokens) {
+export function setSessionCookies(response: Response, session: SessionTokens) {
   const accessLifetimeSeconds = session.accessExpiresAt
     ? Math.max(60, session.accessExpiresAt - Math.floor(Date.now() / 1000))
     : 60 * 60;
-  response.cookies.set(ACCESS_COOKIE, session.accessToken, { ...cookieOptions, maxAge: accessLifetimeSeconds });
-  response.cookies.set(REFRESH_COOKIE, session.refreshToken, { ...cookieOptions, maxAge: refreshLifetimeSeconds });
+  response.headers.append("Set-Cookie", serializeCookie(ACCESS_COOKIE, session.accessToken, accessLifetimeSeconds));
+  response.headers.append("Set-Cookie", serializeCookie(REFRESH_COOKIE, session.refreshToken, refreshLifetimeSeconds));
+  return response;
 }
 
-export function clearSessionCookies(response: NextResponse) {
-  response.cookies.set(ACCESS_COOKIE, "", { ...cookieOptions, maxAge: 0 });
-  response.cookies.set(REFRESH_COOKIE, "", { ...cookieOptions, maxAge: 0 });
+export function clearSessionCookies(response: Response) {
+  response.headers.append("Set-Cookie", serializeCookie(ACCESS_COOKIE, "", 0));
+  response.headers.append("Set-Cookie", serializeCookie(REFRESH_COOKIE, "", 0));
+  return response;
 }

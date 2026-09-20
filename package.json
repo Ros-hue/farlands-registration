@@ -1,41 +1,34 @@
 {
-  "name": "farlands-registration",
-  "version": "0.1.0",
+  "name": "farlands",
   "private": true,
+  "version": "1.0.0",
+  "type": "module",
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "eslint",
-    "provision:admin": "tsx --env-file=.env.local scripts/provision-admin.ts",
-    "test": "tsx --env-file=.env.local --test backend/tests/team-id.test.ts backend/tests/validation.test.ts backend/tests/rate-limit.test.ts backend/tests/manual-payment.test.ts backend/tests/security-authorization.test.ts backend/tests/live-integration.test.ts backend/tests/api-authorization.test.ts"
+    "dev": "concurrently -k -n api,web -c yellow,cyan \"npm:dev:server\" \"npm:dev:frontend\"",
+    "dev:server": "tsx watch server/index.ts",
+    "dev:frontend": "vite --host 127.0.0.1",
+    "build": "vite build",
+    "preview": "vite preview --host 127.0.0.1",
+    "start": "tsx server/index.ts",
+    "test": "tsx --test tests/api-authorization.test.ts backend/tests/manual-payment.test.ts backend/tests/rate-limit.test.ts backend/tests/security-authorization.test.ts backend/tests/team-id.test.ts backend/tests/validation.test.ts && node --test tests/timeline.test.js",
+    "test:live": "tsx --env-file=.env.local --test backend/tests/live-integration.test.ts",
+    "test:browser": "node tests/browser.mjs",
+    "typecheck": "tsc --noEmit",
+    "provision:admin": "tsx --env-file=.env.local scripts/provision-admin.ts"
   },
   "dependencies": {
-    "@react-three/drei": "^10.7.8",
-    "@react-three/fiber": "^9.7.0",
-    "@supabase/server": "^1.4.1",
     "@supabase/supabase-js": "^2.109.0",
-    "@types/canvas-confetti": "^1.9.0",
-    "@types/three": "^0.186.0",
-    "canvas-confetti": "^1.9.4",
-    "framer-motion": "^13.4.0",
-    "lucide-react": "^1.47.0",
-    "next": "16.3.5",
-    "react": "19.2.8",
-    "react-dom": "19.2.8",
-    "three": "^0.186.0",
-    "ws": "^8.21.3"
+    "three": "0.180.0",
+    "ws": "^8.21.3",
+    "zod": "^3.25.76"
   },
   "devDependencies": {
-    "@tailwindcss/postcss": "^4",
+    "@playwright/test": "1.55.0",
     "@types/node": "^20",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
     "@types/ws": "^8.5.14",
-    "eslint": "^9",
-    "eslint-config-next": "16.3.5",
-    "tailwindcss": "^4",
+    "concurrently": "^9.1.2",
     "tsx": "^4.19.2",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vite": "6.3.6"
   }
 }

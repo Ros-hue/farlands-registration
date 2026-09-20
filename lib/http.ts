@@ -1,4 +1,3 @@
-import { NextResponse } from "next/server";
 import { z } from "zod";
 
 export class HttpError extends Error {
@@ -7,11 +6,17 @@ export class HttpError extends Error {
 
 export const noStore = { "Cache-Control": "no-store" };
 
-export function json(data: unknown, status = 200, privateResponse = false) {
-  return NextResponse.json(data, { status, headers: privateResponse ? noStore : undefined });
+export function json(data: unknown, status = 200, privateResponse = false): Response {
+  return new Response(JSON.stringify(data), {
+    status,
+    headers: {
+      "Content-Type": "application/json",
+      ...(privateResponse ? noStore : undefined),
+    },
+  });
 }
 
-export function apiError(error: unknown) {
+export function apiError(error: unknown): Response {
   if (error instanceof HttpError) return json({ error: error.message }, error.status, error.status !== 404);
   if (error instanceof z.ZodError) return json({ error: "Invalid request", details: error.flatten() }, 400);
   // Log unexpected errors for server-side monitoring while keeping client response opaque
